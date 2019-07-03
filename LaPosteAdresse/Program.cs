@@ -10,7 +10,8 @@ namespace ovh.api
         {
             try
             {
-                Rest r = new Rest("/GxhiviTj1kZaVtsdAC7zQlXLpo5/W2dQtAI92CvqjFFVrOGJLmx73vqzLlDn2Vp");
+                string x_okapi_key = Environment.ExpandEnvironmentVariables("%X_OKAPI_KEY%");
+                Rest r = new Rest(x_okapi_key);
                 var adr = "11 chemin des crieurs";
                 string ueadr = System.Net.WebUtility.UrlEncode(adr);
                 dynamic adresses = r.GetAsync<JObject>("https://api.laposte.fr/controladresse/v1/adresses?q=" + ueadr).GetAwaiter().GetResult();
@@ -20,7 +21,25 @@ namespace ovh.api
                     string adresse = item.Value.adresse;
                     dynamic detail = r.GetAsync<JObject>("https://api.laposte.fr/controladresse/v1/adresses/" + code).GetAwaiter().GetResult();
                     Console.WriteLine(detail);
+                    // Console.WriteLine(detail.blocAdresse);
                 }
+
+                /*
+                 * {
+  "destinataire": "",
+  "pointRemise": "",
+  "numeroVoie": "11",
+  "libelleVoie": "CHEMIN DES CRIEURS",
+  "lieuDit": "",
+  "codePostal": "59650",
+  "codeCedex": "",
+  "commune": "VILLENEUVE D ASCQ",
+  "blocAdresse": [
+    "11 CHEMIN DES CRIEURS",
+    "59650 VILLENEUVE D ASCQ"
+  ]
+}
+                 */
             }
             catch (Exception ex)
             {
